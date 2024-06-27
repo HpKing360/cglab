@@ -1,0 +1,119 @@
+#include<GL/glut.h>
+#include<math.h>
+
+void myinit()
+{
+glClearColor(1,1,1,0);
+gluOrtho2D(0,500,0,500);
+}
+
+void triangle()
+{
+glBegin(GL_TRIANGLES);
+glVertex2d(100,100);
+glVertex2d(200,100);
+glVertex2d(150,150);
+glEnd();
+}
+
+
+void translate()
+{
+glPushMatrix();
+glTranslated(100,0,0);
+triangle();
+glPopMatrix();
+}
+
+void rotate()
+{
+glPushMatrix();
+glRotated(45,0,0,1);
+triangle();
+glPopMatrix();
+}
+
+void rotate_pivot()
+{
+glPushMatrix();
+glTranslated(100,100,0);
+glRotated(45,0,0,1);
+glTranslated(-100,-100,0);
+triangle();
+glPopMatrix();
+}
+
+void scaling()
+{
+glPushMatrix();
+glScaled(2,2,1);
+triangle();
+glPopMatrix();
+}
+void pivot_point_scale()
+{
+glColor3f(0,1,0);
+glPushMatrix();
+glTranslated(100,100,0);
+glScaled(2,2,1);
+glTranslated(-100,-100,0);
+triangle();
+glPopMatrix();
+}
+
+
+void displayMe()
+{
+glClear(GL_COLOR_BUFFER_BIT);
+glColor3d(1,0,0);
+triangle();
+glFlush();
+}
+
+void menu_transformation(int id)
+{
+switch(id)
+{
+case 1:
+glColor3d(1,0,1);
+translate();
+break;
+case 2:
+glColor3d(1,0,1);
+rotate();
+break;
+case 3:
+glColor3d(1,0,1);
+rotate_pivot();
+break;
+case 4:
+glColor3d(0,0,1);
+scaling();
+break;
+case 5:
+glColor3d(0,0,1);
+pivot_point_scale();
+break;
+default:
+exit(0);
+}
+}
+
+int main(int argc,char** argv)
+{
+glutInit(&argc,argv);
+glutInitDisplayMode(GLUT_SINGLE);
+glutInitWindowSize(500,500);
+glutCreateWindow("1CR21CS069");
+myinit();
+glutCreateMenu(menu_transformation);
+glutAddMenuEntry("Translate",1);
+glutAddMenuEntry("Rotate - origin",2);
+glutAddMenuEntry("Rotate - pivot",3);
+glutAddMenuEntry("Scale - origin",4);
+glutAddMenuEntry("Scale - pivot",5);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
+glutDisplayFunc(displayMe);
+glutMainLoop();
+return 0;
+}
